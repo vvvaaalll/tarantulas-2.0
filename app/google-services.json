@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "1002505856838",
+    "project_id": "tarantulas-597f9",
+    "storage_bucket": "tarantulas-597f9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1002505856838:android:4d371d9219f1a3a94fe747",
+        "android_client_info": {
+          "package_name": "hr.vloboda.tarantulas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1002505856838-uc264k5i6ntottgg3ilebq2mbe53ubhb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTkG1b2X4vTHUdhgDj5bGCF2cVROiX5m0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1002505856838-uc264k5i6ntottgg3ilebq2mbe53ubhb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1002505856838:android:bd7983d3b2a4710b4fe747",
+        "android_client_info": {
+          "package_name": "vloboda.tarantulaProject.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1002505856838-uc264k5i6ntottgg3ilebq2mbe53ubhb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTkG1b2X4vTHUdhgDj5bGCF2cVROiX5m0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1002505856838-uc264k5i6ntottgg3ilebq2mbe53ubhb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
