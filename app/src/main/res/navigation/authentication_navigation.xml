@@ -6,7 +6,7 @@
     app:startDestination="@id/loginFragment">
     <fragment
         android:id="@+id/registerFragment"
-        android:name="hr.vloboda.tarantulas.authentication.ui.register.RegisterFragment"
+        android:name="hr.vloboda.tarantulas.authentication.ui.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
         <action
@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="hr.vloboda.tarantulas.authentication.ui.login.LoginFragment"
+        android:name="hr.vloboda.tarantulas.authentication.ui.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action

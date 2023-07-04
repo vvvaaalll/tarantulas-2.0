@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tarantulas_navigation"
+    app:startDestination="@id/tarantulasListFragment">
+
+    <fragment
+        android:id="@+id/tarantulasListFragment"
+        android:name="hr.vloboda.tarantulas.tarantulas.TarantulasListFragment"
+        android:label="TarantulasListFragment"
+        tools:layout="@layout/fragment_tarantulas">
+        <action
+            android:id="@+id/action_tarantulasListFragment_to_addTarantulaFragment"
+            app:destination="@id/addTarantulaFragment" />
+        <action
+            android:id="@+id/action_tarantulasListFragment_to_tarantulaFragment"
+            app:destination="@id/tarantulaFragment">
+            <argument
+                android:name="tarantulaId"
+                app:argType="long"
+                android:defaultValue="0L" />
+
+        </action>
+        <action
+            android:id="@+id/action_tarantulasListFragment_to_authenticationActivity"
+            app:destination="@id/authenticationActivity" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addTarantulaFragment"
+        android:name="hr.vloboda.tarantulas.tarantulas.AddTarantulaFragment"
+        android:label="AddTarantulaFragment"
+        tools:layout="@layout/add_tarantula_card">
+        <action
+            android:id="@+id/action_addTarantulaFragment_to_tarantulasListFragment"
+            app:destination="@id/tarantulasListFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/tarantulaFragment"
+        android:name="hr.vloboda.tarantulas.tarantulas.TarantulaFragment"
+        android:label="TarantulaFragment"
+        tools:layout="@layout/fragment_tarantula">
+        <argument
+            android:name="tarantulaId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_tarantulaFragment_to_tarantulasListFragment"
+            app:destination="@id/tarantulasListFragment" />
+    </fragment>
+
+    <activity
+        android:id="@+id/authenticationActivity"
+        android:name="hr.vloboda.tarantulas.AuthenticationActivity"
+        android:label="AuthenticationActivity"
+        tools:layout="@layout/activity_authentication" />
+
+</navigation>

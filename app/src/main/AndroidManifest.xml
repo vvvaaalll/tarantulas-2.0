@@ -3,20 +3,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="hr.vloboda.tarantulas">
 
+    <!-- Add INTERNET permission -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Add READ_EXTERNAL_STORAGE and WRITE_EXTERNAL_STORAGE permissions for gallery access -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+
     <application
+        android:usesCleartextTraffic="true"
+
         android:name=".Tarantulas"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/default_tarantula_image"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/default_tarantula_image"
         android:supportsRtl="true"
         android:theme="@style/Theme.Tarantulas"
         tools:targetApi="31">
+
         <activity
-            android:name=".authentication.ui.AuthenticationActivity"
-            android:exported="true" >
+            android:name=".TarantulasActivity"
+            android:exported="false"
+            />
+
+        <activity
+            android:name=".AuthenticationActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,8 +42,7 @@
 
         <activity
             android:name=".MainActivity"
-            android:exported="false"/>
-
+            android:exported="false" />
     </application>
 
 </manifest>
