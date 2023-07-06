@@ -54,12 +54,14 @@ class LoginFragment : Fragment() {
 
         viewModel.authState.observe(viewLifecycleOwner) { authState ->
             when (authState) {
+                AuthState.Logout -> {
+
+                }
                 AuthState.Success -> {
                     Toast.makeText(context, "Login successful", Toast.LENGTH_SHORT).show()
                     navigateToMainScreen()
                 }
                 else -> {
-                    Toast.makeText(context, "Login failed", Toast.LENGTH_SHORT).show()
                     binding.loginProgressBar.visibility = View.INVISIBLE
                 }
             }

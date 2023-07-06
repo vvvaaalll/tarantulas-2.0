@@ -1,8 +1,10 @@
 package hr.vloboda.tarantulas.model.tarantula
 
+import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
-import java.time.LocalDate
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class UpdateTarantulaDao(
     @SerializedName("species")
     var species: String? = null,
@@ -26,8 +28,12 @@ data class UpdateTarantulaDao(
     var hairs: Boolean? = null,
 
     @SerializedName("last-fed")
-    var lastFeeding: LocalDate? = null,
+    var lastFeeding: String? = null,
 
     @SerializedName("last-moult")
-    var lastMoult: LocalDate? = null
-)
+    var lastMoult: String? = null
+){
+    fun toJson(): String {
+        return Gson().toJson(this)
+    }
+}

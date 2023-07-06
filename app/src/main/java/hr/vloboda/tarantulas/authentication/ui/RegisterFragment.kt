@@ -53,23 +53,20 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.handlePreviousLogin()
-
         // Check if there is a non-expired token in shared preferences
         val authDaoJson = sharedPreferences.getString("authDao", null)
         val authDao: AuthDao? = Gson().fromJson(authDaoJson, AuthDao::class.java)
-        if (authDao != null && authDao.token.token != null) {
+     /*   if (authDao?.token?.token != "") {
             navigateToMainScreen()
-        }
+        }*/
 
-        viewModel.authState.observe(viewLifecycleOwner) { authState ->
-            when (authState) {
+        viewModel.registrationState.observe(viewLifecycleOwner) { registrationState ->
+            when (registrationState) {
                 AuthState.Success -> {
                     Toast.makeText(context, "Registration successful", Toast.LENGTH_SHORT).show()
-                    navigateToMainScreen()
+                    showLoginFragment()
                 }
                 else -> {
-                    Toast.makeText(context, "Registration failed", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -77,11 +74,6 @@ class RegisterFragment : Fragment() {
         binding.createText.setOnClickListener { showLoginFragment() }
     }
 
-    private fun navigateToMainScreen() {
-        val intent = Intent(context, TarantulasActivity::class.java)
-        startActivity(intent)
-        requireActivity().finish() // Optional: Finish the current activity
-    }
 
     private fun showLoginFragment() {
         val action = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()

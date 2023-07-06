@@ -2,8 +2,10 @@ package hr.vloboda.tarantulas.model.tarantula
 
 import android.graphics.drawable.Drawable
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
+import java.time.LocalDate
 
-
+@Serializable
 data class Tarantula(
     @SerializedName("species")
     var species: String = "",
@@ -28,4 +30,10 @@ data class Tarantula(
 
     @SerializedName("hairs")
     var hairs: Boolean = false,
+
+    @SerializedName("last-fed")
+    var lastFeeding: LocalDate? = null,
+
+    @SerializedName("last-moult")
+    var lastMoult: LocalDate? = null
 )

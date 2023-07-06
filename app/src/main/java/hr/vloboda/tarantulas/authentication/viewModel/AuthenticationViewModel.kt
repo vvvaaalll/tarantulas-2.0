@@ -11,12 +11,11 @@ import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import hr.vloboda.tarantulas.AuthenticationActivity
 import hr.vloboda.tarantulas.Tarantulas
-import hr.vloboda.tarantulas.TarantulasActivity
 import hr.vloboda.tarantulas.model.auth.AuthDao
 import hr.vloboda.tarantulas.model.auth.LoginDao
 import hr.vloboda.tarantulas.model.auth.RegisterDao
 import hr.vloboda.tarantulas.repository.common.AuthAPIInterface
-import hr.vloboda.tarantulas.repository.common.AuthRestAdapter
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,6 +25,8 @@ class AuthenticationViewModel : ViewModel() {
 
     private val restClient = RestClient()
     val authApi = restClient.getClient().create(AuthAPIInterface::class.java)
+    private val _registrationState by lazy { MutableLiveData<AuthState>(AuthState.Idle) }
+    val registrationState: LiveData<AuthState> = _registrationState
 
 
     private val _authState by lazy { MutableLiveData<AuthState>(AuthState.Idle) }
@@ -40,8 +41,10 @@ class AuthenticationViewModel : ViewModel() {
         // Check if there is a token in shared preferences
         val authDaoJson = sharedPreferences.getString("authDao", null)
         val authDao: AuthDao? = Gson().fromJson(authDaoJson, AuthDao::class.java)
-        if (authDao != null && authDao.token.token != null) {
+        if (authDao?.token?.token != "") {
             _authState.value = AuthState.Success
+        } else{
+            _authState.value = AuthState.Logout
         }
     }
 
@@ -67,7 +70,7 @@ class AuthenticationViewModel : ViewModel() {
                 call: Call<AuthDao?>?,
                 response: Response<AuthDao?>
             ) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful) {
                     if (response.body() != null) {
                         try {
                             Log.i("onSuccess", response.body().toString())
@@ -88,12 +91,6 @@ class AuthenticationViewModel : ViewModel() {
                             e.printStackTrace()
                             _authState.value = AuthState.AuthError("An error occurred")
                         }
-                    } else {
-                        Log.i(
-                            "onEmptyResponse",
-                            "Returned empty response"
-                        )
-                        _authState.value = AuthState.AuthError("Login failed")
                     }
                 } else {
                     _authState.value = AuthState.AuthError("Login failed")
@@ -128,28 +125,23 @@ class AuthenticationViewModel : ViewModel() {
 
         _authState.value = AuthState.Loading
 
-        val call: Call<Any>? = authApi!!.register(registerDao)
+        val call: Call<ResponseBody>? = authApi!!.register(registerDao)
 
-        call?.enqueue(object : Callback<Any?> {
-            override fun onResponse(call: Call<Any?>?, response: Response<Any?>) {
-                if (response.isSuccessful()) {
-                    if (response.code() == 201) {
-                        // Registration successful, call handleSignIn
-                        handleSignIn(LoginDao(registerDao.username, registerDao.password))
-                    } else {
-                        Log.i(
-                            "onErrorResponse",
-                            "Registration failed with code: ${response.code()}"
-                        )
-                        _authState.value = AuthState.AuthError("Registration failed")
-                    }
+        call?.enqueue(object : Callback<ResponseBody?> {
+            override fun onResponse(call: Call<ResponseBody?>?, response: Response<ResponseBody?>) {
+                if (response.code() == 201) {
+
+                    // Registration successful, trigger registration state
+                    _registrationState.value = AuthState.Success
+                    _authState.value = AuthState.Success
+                    handleSignIn(loginDao = LoginDao(registerDao.username, registerDao.password))
                 } else {
                     Log.i("onErrorResponse", "Registration failed with code: ${response.code()}")
                     _authState.value = AuthState.AuthError("Registration failed")
                 }
             }
 
-            override fun onFailure(call: Call<Any?>?, t: Throwable) {
+            override fun onFailure(call: Call<ResponseBody?>?, t: Throwable) {
                 Log.d("RegisterError", "onFailure: Throw$t")
                 _authState.value = AuthState.AuthError("Registration failed")
             }
@@ -169,6 +161,7 @@ class AuthenticationViewModel : ViewModel() {
         val intent = Intent(context, AuthenticationActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
         context.startActivity(intent)
+        _authState.value = AuthState.Logout
     }
 
 
@@ -178,5 +171,6 @@ sealed class AuthState {
     object Idle : AuthState()
     object Loading : AuthState()
     object Success : AuthState()
+    object Logout : AuthState()
     class AuthError(val message: String? = null) : AuthState()
 }

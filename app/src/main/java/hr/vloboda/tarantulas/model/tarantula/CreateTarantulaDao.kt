@@ -24,4 +24,8 @@ class CreateTarantulaDao(
 
     @SerializedName("img-url")
     val imgUrl: String? = null,
-) {}
+
+) {
+
+}
+

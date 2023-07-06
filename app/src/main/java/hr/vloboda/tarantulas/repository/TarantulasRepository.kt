@@ -27,28 +27,31 @@ class TarantulasRepository {
     fun fetch(): MutableLiveData<List<TarantulaDao>> {
         val authDaoJson = sharedPreferences.getString("authDao", null)
         val authDao: AuthDao? = Gson().fromJson(authDaoJson, AuthDao::class.java)
-        val token: String = authDao?.token?.token!!
-        val tarantulasLiveData = MutableLiveData<List<TarantulaDao>>()
+        if (!(authDao?.token?.token == "")) {
+            val token: String = authDao?.token?.token!!
+            val tarantulasLiveData = MutableLiveData<List<TarantulaDao>>()
 
-        apiInterface.getAll("Bearer $token").enqueue(object : Callback<List<TarantulaDao>> {
-            override fun onResponse(
-                call: Call<List<TarantulaDao>>,
-                response: Response<List<TarantulaDao>>
-            ) {
+            apiInterface.getAll("Bearer $token").enqueue(object : Callback<List<TarantulaDao>> {
+                override fun onResponse(
+                    call: Call<List<TarantulaDao>>,
+                    response: Response<List<TarantulaDao>>
+                ) {
 
-                if (response.isSuccessful) {
-                    tarantulasLiveData.value = response.body()
-                } else {
-                    // Redirect to login activity
+                    if (response.isSuccessful) {
+                        tarantulasLiveData.value = response.body()
+                    } else {
+                        // Redirect to login activity
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<List<TarantulaDao>>, t: Throwable) {
-                // Handle failure
-            }
-        })
-
-        return tarantulasLiveData
+                override fun onFailure(call: Call<List<TarantulaDao>>, t: Throwable) {
+                    // Handle failure
+                }
+            })
+            return tarantulasLiveData
+        } else {
+            return MutableLiveData<List<TarantulaDao>>()
+        }
     }
 
     fun getById(tarantulaId: Long): MutableLiveData<TarantulaDao> {

@@ -85,8 +85,6 @@ class TarantulaFragment : Fragment() {
             moultDatePicker.show()
         }
 
-        Toast.makeText(context, tarantulaId.toString(), Toast.LENGTH_SHORT).show()
-
         binding.btnDelete.setOnClickListener {
             val deleteTarantulaDialog =
                 context?.let { androidx.appcompat.app.AlertDialog.Builder(it) }
@@ -122,12 +120,13 @@ class TarantulaFragment : Fragment() {
     }
 
     private fun displayTarantula(tarantula: TarantulaDao) {
-        Toast.makeText(context, tarantula.species, Toast.LENGTH_SHORT).show()
 
         binding.tvName.setText(tarantula.name)
         binding.urticatingCheckBox.isChecked = tarantula.hairs ?: false
         binding.tvOrigin.setText(tarantula.origin)
         binding.tvSpecies.setText(tarantula.species)
+        binding.tvLastFeeding.text = tarantula.lastFeeding
+        binding.tvLastMoult.text = tarantula.lastMoult
 
         when (tarantula.temper) {
             "1" -> binding.rgTemper.check(binding.rbTemper1.id)
@@ -221,6 +220,9 @@ class TarantulaFragment : Fragment() {
             else -> ""
         }
 
+        val lastFeedingDateString = lastFeedingDate?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDate()?.toString()
+        val lastMoultDateString = lastMoultDate?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDate()?.toString()
+
         val editedTarantula = UpdateTarantulaDao(
             name = name,
             hairs = hairs,
@@ -228,8 +230,8 @@ class TarantulaFragment : Fragment() {
             species = species,
             temper = temper,
             venom = venom,
-            lastFeeding = lastFeedingDate?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDate(),
-            lastMoult = lastMoultDate?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDate()
+            lastFeeding = lastFeedingDateString,
+            lastMoult = lastMoultDateString
         )
 
 
@@ -283,9 +285,9 @@ class TarantulaFragment : Fragment() {
     }
 
     private fun formatDate(date: Date?): String {
-        return date?.let {
-            SimpleDateFormat.getDateInstance().format(it)
-        } ?: ""
+        val formatter = SimpleDateFormat("yyyy-MM-dd")
+        val formattedDate = formatter.format(date)
+        return LocalDate.parse(formattedDate).toString()
     }
 
 }

@@ -17,7 +17,7 @@ class TarantulaDao (
     var origin: String? = "",
 
     @SerializedName("img-url")
-    var img: String? = "",
+    var img: String? = null,
 
 
 
@@ -31,8 +31,8 @@ class TarantulaDao (
     var hairs: Boolean? = false,
 
     @SerializedName("last-fed")
-    var lastFeeding: LocalDate? = LocalDate.now(),
+    var lastFeeding: String? = null,
 
     @SerializedName("last-moult")
-    var lastMoult: LocalDate? = LocalDate.now()
+    var lastMoult: String? = null
 ){}
